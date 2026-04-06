@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explicación - Mini Akinator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0692d4;
+      --secondary: #00c4cc;
+      --dark: #0044a2;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 20px;
+      max-width: 850px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    h1 { font-size: 1.5em; color: var(--secondary); text-align: center; }
+    h2 { font-size: 1.1em; margin-bottom: 5px; }
+    p { font-size: 0.85em; color: rgba(255,255,255,0.95); line-height: 1.4; }
+
+    .tree-box {
+      background: rgba(0,0,0,0.4);
+      padding: 10px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 0.75em;
+      white-space: pre-wrap;
+      border-left: 4px solid var(--secondary);
+      color: #ffffff;
+    }
+
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .char-card {
+      background: rgba(0,0,0,0.3);
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 0.75em;
+      border: 1px solid var(--glass-border);
+      color: #ffffff;
+    }
+
+    .char-card strong { color: var(--secondary); }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.4em; }
+      .container { padding: 20px; gap: 15px; }
+      .tree-box { font-size: 0.75em; }
+      .characters-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Menú</a>
+
+  <div class="container">
+    <h1><i class="fa-solid fa-sitemap"></i> Estructura: Árbol de Decisiones</h1>
+    
+    <section>
+      <h2>¿Cómo funciona?</h2>
+      <p>El Mini Akinator utiliza un <strong>Árbol Binario de Decisiones</strong>. Cada nodo representa una pregunta con dos posibles caminos (Sí/No), reduciendo el conjunto de posibles personajes hasta llegar a una hoja (resultado final).</p>
+    </section>
+
+    <section>
+      <h2>Mapa de Decisiones</h2>
+      <div class="tree-box">
+[INICIO] -> Deportista?
+  ├── SÍ -> ¿Fútbol?
+  │    ├── SÍ -> ¿Argentino? -> MESSI
+  │    └── NO -> ¿Americano? -> LEBRON JAMES
+  └── NO -> ¿Político?
+       ├── SÍ -> ¿De USA?
+       │    └── SÍ -> ¿Presidente?
+       │         ├── SÍ -> TRUMP
+       │         └── NO -> CHARLIE KIRK
+       └── NO -> No identificado
+      </div>
+    </section>
+
+    <section>
+      <h2>Base de Conocimientos</h2>
+      <div class="characters-grid">
+        <div class="char-card"><strong>Messi:</strong> Deportista + Fútbol + Argentino</div>
+        <div class="char-card"><strong>C. Ronaldo:</strong> Deportista + Fútbol + Portugués</div>
+        <div class="char-card"><strong>Trump:</strong> Político + USA + Presidente</div>
+        <div class="char-card"><strong>Charlie Kirk:</strong> Político + USA + No Presidente</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

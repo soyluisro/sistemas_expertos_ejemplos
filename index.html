@@ -2,84 +2,265 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistemas Expertos - Ejemplos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #0692d4;
+      --secondary: #00c4cc;
+      --dark: #0044a2;
+      --accent: #e950f7;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: 
+        linear-gradient(135deg, var(--dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+      background-attachment: fixed;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
       padding: 20px;
+      position: relative;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(233, 80, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 196, 204, 0.15) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .header {
       text-align: center;
-      background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 3em;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: 0 0 60px rgba(0, 196, 204, 0.3);
+      letter-spacing: -1px;
     }
+
     p.subtitle {
-      color: #aaa;
-      margin-bottom: 50px;
-      text-align: center;
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1em;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
+
     .cards {
       display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
+      gap: 20px;
+      flex-wrap: nowrap;
       justify-content: center;
+      width: 100%;
+      max-width: 900px;
+      position: relative;
+      z-index: 1;
     }
+
     .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 40px 30px;
-      width: 300px;
+      padding: 25px 20px;
+      flex: 1;
+      min-width: 0;
+      max-width: 320px;
       text-align: center;
-      transition: all 0.3s ease;
       text-decoration: none;
       color: white;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .card:hover {
-      transform: translateY(-10px);
-      border-color: #7b2ff7;
-      box-shadow: 0 20px 40px rgba(123, 47, 247, 0.3);
+
+    .card-icon {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      display: inline-block;
     }
-    .card-icon { font-size: 4em; margin-bottom: 20px; }
-    .card h2 { font-size: 1.5em; margin-bottom: 15px; }
-    .card p { color: #aaa; font-size: 0.95em; line-height: 1.6; }
-    footer {
-      margin-top: 50px;
-      color: #666;
+
+    .card h2 {
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .card p {
+      color: rgba(255, 255, 255, 0.7);
       font-size: 0.85em;
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+
+    .card-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.85em;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--secondary);
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+    }
+
+    .btn-play:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+
+    .card p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9em;
+      line-height: 1.4;
+    }
+
+    .card-footer {
+      margin-top: 15px;
+      font-size: 0.8em;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      .header { margin-bottom: 12px; }
+      h1 { font-size: 1.6em; }
+      p.subtitle { font-size: 0.8em; }
+      
+      .cards { 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 10px; 
+      }
+      
+      .card { 
+        padding: 12px 15px; 
+        width: 100%; 
+        max-width: 260px;
+        flex: 0 1 auto;
+      }
+      
+      .card-icon { font-size: 1.8em; margin-bottom: 5px; }
+      .card h2 { font-size: 1.1em; margin-bottom: 2px; }
+      .card p { display: none; }
+      .card-buttons { gap: 6px; }
+      .btn-action { padding: 8px; font-size: 0.75em; border-radius: 8px; }
+    }
+
+    @media (max-height: 450px) {
+      body { flex-direction: row; gap: 30px; }
+      .header { text-align: left; margin-bottom: 0; }
+      .cards { flex-direction: row; flex-wrap: nowrap; height: auto; width: auto; }
+      .card { height: 160px; width: 180px; }
     }
   </style>
 </head>
 <body>
-  <h1>Sistemas Expertos</h1>
-  <p class="subtitle">Ejemplos interactivos de sistemas basados en reglas</p>
-  
-  <div class="cards">
-    <a href="notkinator/" class="card">
-      <div class="card-icon">🤖</div>
-      <h2>Mini Akinator</h2>
-      <p>Adivina personajes mediante preguntas de sí/no. Un sistema experto que deduce usando lógica binaria.</p>
-    </a>
-    
-    <a href="harrytopper/" class="card">
-      <div class="card-icon">🎩</div>
-      <h2>Sombrero Seleccionador</h2>
-      <p>Descubre tu casa en Hogwarts según tu personalidad. Sistema de inferencia por reglas de características.</p>
-    </a>
+  <div class="header">
+    <h1>Sistemas Expertos</h1>
+    <p class="subtitle">Ejemplos interactivos de sistemas basados en reglas</p>
   </div>
   
-  <footer>Hecho con JavaScript vanilla</footer>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-robot"></i></div>
+      <h2>Mini Akinator</h2>
+      <p>Adivina personajes mediante preguntas. Basado en lógica binaria.</p>
+      <div class="card-buttons">
+        <a href="explicacion_akinator.html" class="btn-action"><i class="fa-solid fa-sitemap"></i> Explicación</a>
+        <a href="notkinator/" class="btn-action btn-play"><i class="fa-solid fa-play"></i> Jugar</a>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-hat-wizard"></i></div>
+      <h2>Sombrero Seleccionador</h2>
+      <p>Descubre tu casa en Hogwarts. Basado en reglas de características.</p>
+      <div class="card-buttons">
+        <a href="explicacion_sombrero.html" class="btn-action"><i class="fa-solid fa-sitemap"></i> Explicación</a>
+        <a href="harrytopper/" class="btn-action btn-play"><i class="fa-solid fa-play"></i> Jugar</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

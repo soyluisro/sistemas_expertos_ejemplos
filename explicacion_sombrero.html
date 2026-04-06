@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explicación - Sombrero Seleccionador</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Spectral:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gry: #740001;
+      --sly: #1a472a;
+      --rav: #0e1a40;
+      --huf: #ecb939;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Spectral', serif;
+      background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
+      color: #f7e1b5;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: #3e2723;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      padding: 8px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-family: 'Cinzel', serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .container {
+      background: #f4e4bc;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 850px;
+      width: 100%;
+      color: #3e2723;
+      border: 8px double #8b4513;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    h1 { font-family: 'Cinzel', serif; font-size: 1.5em; text-align: center; color: #8b4513; }
+    h2 { font-family: 'Cinzel', serif; font-size: 1.1em; border-bottom: 2px solid #8b4513; margin-bottom: 5px; }
+    p { font-size: 0.9em; line-height: 1.4; text-align: justify; }
+
+    .house-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .house-box {
+      padding: 8px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      font-size: 0.9em;
+    }
+
+    .gry { background: var(--gry); border: 2px solid #d4af37; }
+    .sly { background: var(--sly); border: 2px solid #aaaaaa; }
+    .rav { background: var(--rav); border: 2px solid #946b2d; }
+    .huf { background: var(--huf); color: #3e2723; border: 2px solid #372e29; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.4em; }
+      .container { padding: 20px; gap: 15px; width: 95%; }
+      .house-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Menú</a>
+
+  <div class="container">
+    <h1><i class="fa-solid fa-code-branch"></i> Sistemas Basados en Reglas</h1>
+    
+    <section>
+      <h2>Fundamentos (Rule-Based)</h2>
+      <p>El Sombrero Seleccionador opera sobre un esquema estricto de <strong>SI... ENTONCES</strong>. A diferencia de un árbol que se recorre paso a paso, aquí el motor evalúa múltiples condiciones en paralelo para disparar una conclusión fundamentada en la base de conocimientos.</p>
+    </section>
+
+    <section>
+      <h2>Lógica y Uso</h2>
+      <div class="house-grid">
+        <div class="house-box gry">GRYFFINDOR<br><small>Valor + Coraje</small></div>
+        <div class="house-box sly">SLYTHERIN<br><small>Ambición + Astucia</small></div>
+        <div class="house-box rav">RAVENCLAW<br><small>Sabiduría + Curiosidad</small></div>
+        <div class="house-box huf">HUFFLEPUFF<br><small>Lealtad + Trabajo</small></div>
+      </div>
+    </section>
+
+    <section>
+    </section>
+  </div>
+</body>
+</html>

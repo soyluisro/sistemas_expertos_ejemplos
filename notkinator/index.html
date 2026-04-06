@@ -1,41 +1,306 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mini Akinator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Akinator - Sistemas Expertos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #0692d4;
+      --secondary: #00c4cc;
+      --dark: #0044a2;
+      --accent: #e950f7;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-        font-family: Arial, sans-serif;
-        background: #0f172a;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: 
+        linear-gradient(135deg, var(--dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+      background-attachment: fixed;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(233, 80, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 196, 204, 0.15) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      background: var(--accent);
+      transform: translateX(-5px);
     }
 
     .container {
-        text-align: center;
-        background: #1e293b;
-        padding: 30px;
-        border-radius: 16px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 40px 30px;
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+      max-height: 90vh;
+      max-height: 90dvh;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.6s ease-out;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .robot-icon {
+      font-size: 5em;
+      margin-bottom: 20px;
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    h1 i {
+      margin-right: 10px;
+      color: var(--secondary);
+    }
+
+    #question {
+      font-size: 1.3em;
+      margin: 30px 0;
+      min-height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .character-list {
+      font-size: 0.7em;
+      color: var(--secondary);
+      margin-top: 10px;
+      font-weight: 400;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .character-tag {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), var(--accent));
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 3px;
+    }
+
+    #buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     button {
-        margin: 10px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1em;
+      font-weight: 500;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-size: 1.1em;
+      padding: 18px 50px;
+    }
+
+    .btn-start:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 196, 204, 0.4);
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: white;
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+    }
+
+    .btn-no {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+
+    .btn-no:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+    }
+
+    .btn-restart {
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: white;
+    }
+
+    .btn-restart:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(233, 80, 247, 0.4);
+    }
+
+    .result {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-top: 20px;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .result i {
+      margin-right: 10px;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container { 
+        padding: 25px 20px;
+        max-height: 95dvh;
+      }
+      h1 { font-size: 1.5em; }
+      #question { font-size: 1.05em; margin: 15px 0; min-height: 40px; }
+      button { padding: 10px 20px; font-size: 0.9em; }
+      .robot-icon { font-size: 2.5em; margin-bottom: 10px; }
+      .back-btn { padding: 8px 12px; font-size: 0.8em; top: 10px; left: 10px; }
+    }
+
+    @media (max-height: 550px) {
+      .container { padding: 15px; }
+      .robot-icon { font-size: 2em; margin-bottom: 5px; }
+      h1 { font-size: 1.2em; margin-bottom: 5px; }
+      #question { margin: 10px 0; font-size: 1em; min-height: 30px; }
+      .progress-bar { margin-bottom: 15px; }
+      button { padding: 8px 20px; font-size: 0.85em; }
+    }
+
+    @media (max-width: 360px) {
+      .container { padding: 20px 15px; }
+      h1 { font-size: 1.4em; }
+      button { padding: 10px 20px; font-size: 0.85em; }
     }
   </style>
 </head>
 <body>
+  <a href="../" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+
   <div class="container">
-    <h1>Mini Akinator 🤖</h1>
-    <p id="question">Piensa en un personaje...</p>
+    <div class="robot-icon"><i class="fa-solid fa-robot"></i></div>
+    <h1><i class="fa-solid fa-brain"></i>Mini Akinator</h1>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress"></div>
+    </div>
+    
+    <p id="question">
+      Piensa en uno de estos personajes y adivinaré quién es...
+    </p>
+    <div id="character-list-container" class="character-list">
+      <span class="character-tag"><i class="fa-solid fa-futbol"></i> Messi</span>
+      <span class="character-tag"><i class="fa-solid fa-futbol"></i> Cristiano</span>
+      <span class="character-tag"><i class="fa-solid fa-basketball"></i> LeBron</span>
+      <span class="character-tag"><i class="fa-solid fa-flag-usa"></i> Trump</span>
+      <span class="character-tag"><i class="fa-solid fa-microphone"></i> Charlie Kirk</span>
+    </div>
+    
     <div id="buttons">
-      <button onclick="startGame()">Empezar</button>
+      <button class="btn-start" onclick="startGame()">
+        <i class="fa-solid fa-play"></i> Empezar
+      </button>
     </div>
   </div>
 
@@ -47,79 +312,96 @@
 
     const questionEl = document.getElementById("question");
     const answersDiv = document.getElementById("buttons");
+    const progressEl = document.getElementById("progress");
+    const charListContainer = document.getElementById("character-list-container");
 
-    function startGame() {
-        step = 0;
-        questionEl.innerText = "¿Tu personaje es deportista?";
-        answersDiv.innerHTML = `
-            <button onclick="answer(true)">Sí</button>
-            <button onclick="answer(false)">No</button>
-        `;
+    const totalSteps = 5;
+    
+    function updateProgress() {
+      const pct = Math.max(0, ((step - 1) / totalSteps) * 100);
+      progressEl.style.width = pct + "%";
     }
 
-    function showResult(text) {
-        questionEl.innerHTML = `Tu personaje es: <strong>${text}</strong>`;
-        answersDiv.innerHTML = `
-            <button onclick="location.reload()">Jugar otra vez 🔄</button>
-        `;
+    function startGame() {
+      step = 1;
+      isDeportista = null;
+      isFutbol = null;
+      isAmericano = null;
+      updateProgress();
+      
+      // Ocultamos la lista de personajes
+      if (charListContainer) charListContainer.style.display = "none";
+      
+      questionEl.innerHTML = `¿Tu personaje es deportista?`;
+      answersDiv.innerHTML = `
+        <button class="btn-yes" onclick="answer(true)">
+          <i class="fa-solid fa-check"></i> Sí
+        </button>
+        <button class="btn-no" onclick="answer(false)">
+          <i class="fa-solid fa-xmark"></i> No
+        </button>
+      `;
+    }
+
+    function showResult(text, icon = "fa-solid fa-check") {
+      questionEl.innerHTML = `<div class="result"><i class="${icon}"></i>Tu personaje es: <strong>${text}</strong></div>`;
+      progressEl.style.width = "100%";
+      answersDiv.innerHTML = `
+        <button class="btn-restart" onclick="location.reload()">
+          <i class="fa-solid fa-rotate-right"></i> Jugar otra vez
+        </button>
+      `;
     }
 
     function answer(res) {
-
-        if (step === 0) {
-            isDeportista = res;
-            step++;
-            questionEl.innerText = isDeportista
-                ? "¿Es jugador de fútbol?"
-                : "¿Es político?";
+      if (step === 1) {  // ¿Es deportista?
+        isDeportista = res;
+        questionEl.innerHTML = isDeportista 
+            ? "¿Es jugador de fútbol?" 
+            : "¿Es político?";
+        step++;
+      }
+      else if (step === 2 && isDeportista) {  // ¿Es jugador de fútbol?
+        isFutbol = res;
+        questionEl.innerHTML = isFutbol 
+            ? "¿Es argentino?" 
+            : "¿Es americano?";
+        step++;
+      }
+      else if (step === 3 && isDeportista && isFutbol) {  // ¿Es argentino?
+        if (res) {
+          showResult("Lionel Messi", "fa-solid fa-futbol");
+        } else {
+          questionEl.innerHTML = "¿Es portugués?";
+          step++;
         }
-
-        else if (step === 1 && isDeportista) {
-            isFutbol = res;
-            step++;
-            questionEl.innerText = isFutbol
-                ? "¿Es argentino?"
-                : "¿Es americano?";
+      }
+      else if (step === 4 && isDeportista && isFutbol) {  // ¿Es portugués?
+        showResult(res ? "Cristiano Ronaldo" : "No identificado");
+      }
+      else if (step === 3 && isDeportista && !isFutbol) {  // ¿Es americano? (no es fútbol)
+        showResult(res ? "LeBron James" : "No identificado");
+      }
+      else if (step === 2 && !isDeportista) {  // ¿Es político?
+        if (res) {
+          questionEl.innerHTML = "¿Es de USA?";
+          step++;
+        } else {
+          showResult("No identificado");
         }
-
-        else if (step === 2 && isDeportista && isFutbol) {
-            if (res) {
-                showResult("Messi");
-            } else {
-                questionEl.innerText = "¿Es portugués?";
-                step++;
-            }
+      }
+      else if (step === 3 && !isDeportista) {  // ¿Es de USA?
+        if (res) {
+          questionEl.innerHTML = "¿Es presidente?";
+          step++;
+        } else {
+          showResult("No identificado");
         }
-
-        else if (step === 3 && isDeportista && isFutbol) {
-            showResult(res ? "Cristiano Ronaldo ⚽" : "No identificado");
-        }
-
-        else if (step === 2 && isDeportista && !isFutbol) {
-            showResult(res ? "LeBron James" : "No identificado");
-        }
-
-        else if (step === 1 && !isDeportista) {
-            if (res) {
-                questionEl.innerText = "¿Es de USA?";
-                step++;
-            } else {
-                showResult("No identificado");
-            }
-        }
-
-        else if (step === 2 && !isDeportista) {
-            if (res) {
-                questionEl.innerText = "¿Es presidente?";
-                step++;
-            } else {
-                showResult("No identificado");
-            }
-        }
-
-        else if (step === 3 && !isDeportista) {
-            showResult(res ? "Donald Trump" : "Charlie Kirk");
-        }
+      }
+      else if (step === 4 && !isDeportista) {  // ¿Es presidente?
+        showResult(res ? "Donald Trump" : "Charlie Kirk");
+      }
+      updateProgress();
     }
   </script>
 </body>

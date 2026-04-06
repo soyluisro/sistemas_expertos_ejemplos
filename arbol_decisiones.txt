@@ -1,0 +1,198 @@
+================================================================================
+                    ÁRBOLES DE DECISIÓN - SISTEMAS EXPERTOS
+================================================================================
+
+================================================================================
+1. MINI AKINATOR (Notkinator)
+================================================================================
+
+Estructura: Árbol binario de decisiones con preguntas Sí/No
+
+[INICIO]
+    │
+    ▼
+┌─────────────────────────────────┐
+│ Step 1: ¿Tu personaje es        │
+│         deportista?             │
+└─────────────────────────────────┘
+              │
+    ┌─────────┴─────────┐
+    │                   │
+   SÍ                   NO
+    │                   │
+    ▼                   ▼
+┌─────────────────┐  ┌─────────────────┐
+│ Step 2: ¿Es     │  │ Step 2: ¿Es     │
+│ jugador de      │  │ político?       │
+│ fútbol?         │  │                 │
+└─────────────────┘  └─────────────────┘
+    │                   │
+    ├─────────┐        ├─────────┐
+   SÍ        NO       SÍ        NO
+    │         │        │         │
+    ▼         ▼        ▼         ▼
+┌────────┐┌────────┐┌────────┐┌──────────┐
+│Step 3: ││Step 3: ││Step 3: ││No         │
+│¿Es     ││¿Es     ││¿Es de  ││identificado│
+│argentino││americano││USA?    ││           │
+└────────┘└────────┘└────────┘└──────────┘
+    │         │        │
+   SÍ        NO       SÍ
+    │         │        │
+    ▼         ▼        ▼
+┌────────┐┌────────┐┌─────────┐
+│ Messi  ││Step 4: ││Step 4:  │
+│        ││¿Es     ││¿Es      │
+│        ││portugués││presidente?
+└────────┘└────────┘└─────────┘
+              │              │
+             SÍ             SÍ/NO
+              │              │
+              ▼              ▼
+      ┌──────────────┐ ┌──────────┐
+      │   Cristiano   │ │ Trump /  │
+      │   Ronaldo     │ │ Charlie  │
+      │               │ │ Kirk     │
+      └──────────────┘ └──────────┘
+
+
+PERSONAJES FINALES:
++------------------+------------------+------------------+
+| Personaje        | Características  | Step final      |
++------------------+------------------+------------------+
+| Lionel Messi     | Deportista=Futbol | Step 3, SÍ     |
+|                  | Argentino=SÍ      |                |
++------------------+------------------+------------------+
+| Cristiano Ronaldo| Deportista=Futbol | Step 4, SÍ     |
+|                  | Argentino=NO      |                |
+|                  | Portugués=SÍ      |                |
++------------------+------------------+------------------+
+| LeBron James     | Deportista=YES    | Step 3, NO     |
+|                  | Fútbol=NO         |                |
+|                  | Americano=SÍ      |                |
++------------------+------------------+------------------+
+| Donald Trump    | Deportista=NO     | Step 4, SÍ     |
+|                  | Político=SÍ       |                |
+|                  | USA=SÍ           |                |
+|                  | Presidente=SÍ    |                |
++------------------+------------------+------------------+
+| Charlie Kirk    | Deportista=NO     | Step 4, NO     |
+|                  | Político=SÍ       |                |
+|                  | USA=SÍ           |                |
+|                  | Presidente=NO    |                |
++------------------+------------------+------------------+
+
+
+================================================================================
+2. SOMBRERO SELECCIONADOR (Harrytopper)
+================================================================================
+
+Estructura: Sistema de inferencia por características
+
+[INICIO]
+    │
+    ▼
+┌─────────────────────────────────────────┐
+│ Pregunta 1: ¿Eres valiente?             │
+└─────────────────────────────────────────┘
+              │
+    ┌─────────┴─────────┐
+   SÍ                  NO
+    │                   │
+    ▼                   ▼
+┌───────────────────┐ ┌───────────────────┐
+│ Pregunta 2:       │ │ Pregunta 3:       │
+│ ¿Eres temerario? │ │ ¿Eres ambicioso?  │
+└───────────────────┘ └───────────────────┘
+
+
+PREGUNTAS DEL TEST:
++------------------+------------------+----------------------------------------+
+| #  | Pregunta       | Característica   | Casa asociada                        |
++----+---------------+------------------+--------------------------------------+
+| 1  | ¿Eres valiente?| valiente         | Gryffindor                           |
+| 2  | ¿Eres temerario?| temerario       | Gryffindor                           |
+| 3  | ¿Eres ambicioso?| ambicioso       | Slytherin                            |
+| 4  | ¿Eres astuto?  | astuto           | Slytherin                            |
+| 5  | ¿Eres          | inteligente      | Ravenclaw                            |
+|    | inteligente?   |                  |                                      |
+| 6  | ¿Eres curioso? | curioso         | Ravenclaw                            |
+| 7  | ¿Eres leal?    | leal             | Hufflepuff                           |
+| 8  | ¿Eres          | trabajador       | Hufflepuff                           |
+|    | trabajador?    |                  |                                      |
++----+---------------+------------------+--------------------------------------+
+
+
+REGLAS DE INFERENCIA:
++---------------------+------------------------------------------+
+| Casa               | Requisitos (ambos caracteres requeridos) |
++---------------------+------------------------------------------+
+| Gryffindor         | valiente + temerario                     |
+| Slytherin          | ambicioso + astuto                      |
+| Ravenclaw         | inteligente + curioso                   |
+| Hufflepuff        | leal + trabajador                       |
++---------------------+------------------------------------------+
+
+
+LÓGICA DE SELECCIÓN:
+    │
+    ▼
+┌─────────────────────────────────────────┐
+│ 1. Verificar respuestas positivas      │
+│ 2. Para cada regla, verificar si el    │
+│    usuario tiene TODAS las             │
+│    características requeridas          │
+│ 3. Si coincide con una casa → mostrar   │
+│    casa resultante                      │
+│ 4. Si no coincide con ninguna → Muggle  │
+└─────────────────────────────────────────┘
+
+
+EJEMPLO DE FLUJO:
++------------------+--------+----------------------------------------+
+| Pregunta         | Resp.  | Característica agregada               |
++------------------+--------+----------------------------------------+
+| ¿Eres valiente?  | SÍ     | valiente                               |
+| ¿Eres temerario? | SÍ     | valiente, temerario                   |
+| ¿Eres ambicioso? | NO     | valiente, temerario                    |
+| ¿Eres astuto?    | NO     | valiente, temerario                    |
+| ¿Eres inteligente?| SÍ    | valiente, temerario, inteligente      |
+| ¿Eres curioso?   | NO     | valiente, temerario, inteligente      |
+| ¿Eres leal?       | NO     | valiente, temerario, inteligente      |
+| ¿Eres trabajador? | NO    | valiente, temerario, inteligente      |
++------------------+--------+----------------------------------------+
+
+RESULTADO: Gryffindor
+(Razón: Tiene valiente + temerario = Gryffindor)
+
+
+CASAS FINALES:
++--------------+---------------------------+--------------------------------+
+| Casa         | Colores tradicionales    | Características               |
++--------------+---------------------------+--------------------------------+
+| Gryffindor   | Rojo/Dorado              | Valiente, Temerario           |
+| Slytherin    | Verde/Plata              | Ambicioso, Astuto             |
+| Ravenclaw    | Azul/Bronce              | Inteligente, Curioso          |
+| Hufflepuff  | Amarillo/Negro           | Leal, Trabajador              |
+| Muggle       | Gris                     | No coincide con ninguna casa  |
++--------------+---------------------------+--------------------------------+
+
+
+================================================================================
+                              RESUMEN COMPARATIVO
+================================================================================
+
++------------------+------------------------+--------------------------------+
+| Característica   | Mini Akinator          | Sombrero Seleccionador        |
++------------------+------------------------+--------------------------------+
+| Tipo de sistema  | Encadenamiento hacia    | Inferencia por características |
+|                 | adelante (forward       | (attribute-based inference)   |
+|                 | chaining)               |                                |
+| Estructura      | Árbol binario           | Matriz de atributos           |
+| Preguntas       | 1-4 variables           | 8 preguntas fijas             |
+| Lógica          | If-else anidados        | Verificación de requisitos    |
+| Finales         | 5 personajes            | 5 casas (4 + Muggle)         |
+| Profundidad     | 4 niveles máximo        | 8 preguntas                   |
++------------------+------------------------+--------------------------------+
+
+================================================================================

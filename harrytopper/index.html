@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Sombrero Seleccionador</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Spectral:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     body {
@@ -10,34 +11,36 @@
       background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
       color: #f7e1b5;
       text-align: center;
-      padding: 50px 20px;
+      padding: 20px;
       margin: 0;
-      min-height: 100vh;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     h1 { 
       font-family: 'Cinzel', serif; 
-      font-size: 3em; 
-      margin-bottom: 30px; 
+      font-size: 2.2em; 
+      margin-bottom: 15px; 
       text-shadow: 0 0 10px rgba(247, 225, 181, 0.5);
       letter-spacing: 2px;
     }
 
     .mute-btn {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 15px;
+      right: 15px;
       background: #3e2723;
       border: 2px solid #d4af37;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
-      font-size: 1.5em;
+      font-size: 1.1em;
       color: #d4af37;
       transition: all 0.3s;
       z-index: 1000;
@@ -47,36 +50,67 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
     }
 
+    .back-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      background: #3e2723;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      padding: 8px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-family: 'Cinzel', serif;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      background: #8b4513;
+      transform: translateX(-5px);
+    }
+
     /* Contenedor tipo pergamino */
     .container {
       background: #f4e4bc;
       background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
-      padding: 40px;
+      padding: 20px;
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 100px rgba(139, 69, 19, 0.2);
       max-width: 600px;
-      width: 90%;
+      width: 100%;
+      height: auto;
+      max-height: 85vh;
+      max-height: 85dvh;
+      overflow-y: auto;
       color: #3e2723;
       border: 8px double #8b4513;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     #pregunta { 
-      font-size: 1.8em; 
-      margin: 40px 0; 
+      font-size: 1.6em; 
+      margin: 20px 0; 
       font-weight: 700;
-      min-height: 80px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .botones { margin: 30px 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .botones { margin: 20px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     
     button {
       font-family: 'Cinzel', serif;
-      font-size: 1.1em;
-      padding: 12px 30px;
+      font-size: 1em;
+      padding: 10px 25px;
       border: 2px solid #3e2723;
       border-radius: 5px;
       cursor: pointer;
@@ -126,8 +160,8 @@
     }
 
     .character-info img {
-      width: 150px;
-      height: 200px;
+      width: clamp(100px, 20vh, 150px);
+      height: auto;
       object-fit: cover;
       border-radius: 10px;
       border: 4px solid gold;
@@ -135,7 +169,11 @@
     }
 
     /* Casas */
-    .gryffindor { color: #740001; background: #ae0001; border: 5px solid #d4af37; padding: 25px; border-radius: 10px; color: #fff; box-shadow: 0 0 20px #d4af37; }
+    .gryffindor, .slytherin, .ravenclaw, .hufflepuff, .muggle {
+      padding: clamp(10px, 3vh, 25px);
+      font-size: clamp(0.8em, 2vh, 1em);
+    }
+    .gryffindor { color: #740001; background: #ae0001; border: 5px solid #d4af37; border-radius: 10px; color: #fff; box-shadow: 0 0 20px #d4af37; }
     .slytherin { color: #1a472a; background: #2a623d; border: 5px solid #aaaaaa; padding: 25px; border-radius: 10px; color: #fff; box-shadow: 0 0 20px #aaaaaa; }
     .ravenclaw { color: #0e1a40; background: #222f5b; border: 5px solid #946b2d; padding: 25px; border-radius: 10px; color: #fff; box-shadow: 0 0 20px #946b2d; }
     .hufflepuff { color: #372e29; background: #ecb939; border: 5px solid #372e29; padding: 25px; border-radius: 10px; color: #372e29; box-shadow: 0 0 20px #372e29; }
@@ -148,11 +186,40 @@
 
     .fade-in { animation: fadeIn 0.6s ease forwards; }
 
+    @media (max-width: 768px) {
+      body { padding: 20px 15px; }
+      h1 { font-size: 2em; }
+      .container { padding: 30px 20px; max-width: 90%; }
+      #pregunta { font-size: 1.4em; }
+      button { padding: 10px 25px; font-size: 1em; }
+      .botones { gap: 15px; }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.2em; margin-top: 30px; }
+      .container { padding: 15px; width: 95%; max-height: 80vh; }
+      #pregunta { font-size: 1em; min-height: 40px; margin: 15px 0; }
+      button { padding: 8px 12px; font-size: 0.8em; }
+      .botones { gap: 8px; flex-direction: row; }
+      .character-info img { width: 90px; height: 120px; }
+      .mute-btn { width: 35px; height: 35px; font-size: 1em; top: 10px; right: 10px; }
+      .back-btn { padding: 6px 10px; font-size: 0.75em; top: 10px; left: 10px; }
+    }
+
+    @media (max-height: 550px) {
+      h1 { font-size: 1.2em; margin-bottom: 10px; }
+      .container { padding: 12px; }
+      #pregunta { font-size: 1em; margin: 10px 0; min-height: 40px; }
+      .botones { margin: 15px 0; }
+      button { padding: 8px 15px; font-size: 0.8em; }
+    }
   </style>
 </head>
 <body>
-  <h1>🏠 Sombrero Seleccionador</h1>
-  <button id="muteBtn" class="mute-btn" onclick="toggleMute()">🔊</button>
+  <a href="../" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+  <h1><i class="fa-solid fa-hat-wizard"></i> Sombrero Seleccionador</h1>
+  <button id="muteBtn" class="mute-btn" onclick="toggleMute()"><i class="fa-solid fa-volume-high"></i></button>
   
   <div class="container fade-in">
     <div id="inicio">
@@ -240,7 +307,7 @@
     
     function toggleMute() {
       muteado = !muteado;
-      document.getElementById('muteBtn').textContent = muteado ? '🔇' : '🔊';
+      document.getElementById('muteBtn').innerHTML = muteado ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
       if (muteado) window.speechSynthesis.cancel();
     }
     
@@ -258,11 +325,11 @@
           utterance.voice = vozCache;
           // Forzamos un pitch muy bajo para lograr la voz "gruesa" de mago/sombrero
           var esNatural = vozCache.name.includes('Natural') || vozCache.name.includes('Neural');
-          utterance.rate = esNatural ? 0.75 : 0.8; // Un poco más lento para enfatizar la gravedad
-          utterance.pitch = 0.35; // Pitch muy bajo para voz gruesa (el rango es 0 a 2)
+          utterance.rate = esNatural ? 1.0 : 1.1; // Velocidad normal a rápida para mejor respuesta
+          utterance.pitch = 0.8; // Pitch base (el rango es 0 a 2)
         } else {
-          utterance.rate = 0.75;
-          utterance.pitch = 0.35;
+          utterance.rate = 1.0;
+          utterance.pitch = 0.8;
         }
 
         utterance.onend = function() {
@@ -270,12 +337,13 @@
         };
 
         // Fallback por si onend no dispara (común en algunos navegadores)
-        var forzarCallback = setTimeout(function() {
+        if (window._speechTimeout) clearTimeout(window._speechTimeout);
+        window._speechTimeout = setTimeout(function() {
           if (callback) {
             callback();
             callback = null;
           }
-        }, texto.length * 150); // Estimación de tiempo por caracteres
+        }, texto.length * 100); 
 
         window.speechSynthesis.speak(utterance);
       } else {
@@ -290,9 +358,10 @@
       document.querySelector('.btn-si').style.opacity = '0.5';
       document.querySelector('.btn-no').style.opacity = '0.5';
       
-      // El bloqueo ahora dura lo que tarde el audio o 3s de seguridad
-      var tiempo = duracion || 3000;
-      setTimeout(function() {
+      // El bloqueo ahora dura lo que tarde el audio o 1s de seguridad (reducido de 3s)
+      var tiempo = duracion || 1000;
+      if (window._blockTimeout) clearTimeout(window._blockTimeout);
+      window._blockTimeout = setTimeout(function() {
         bloqueado = false;
         document.querySelector('.btn-si').disabled = false;
         document.querySelector('.btn-no').disabled = false;
@@ -305,9 +374,9 @@
       document.getElementById('inicio').style.display = 'none';
       document.getElementById('test').style.display = 'block';
       hablar("Bienvenido, joven mago. Descubre a qué casa de Hogwarts perteneces.", function() {
-        setTimeout(mostrarPregunta, 500);
+        setTimeout(mostrarPregunta, 300);
       });
-      bloquearBotones(4000);
+      bloquearBotones(1500);
     }
     
     function mostrarPregunta() {
@@ -328,11 +397,12 @@
         document.querySelector('.btn-si').style.opacity = '1';
         document.querySelector('.btn-no').style.opacity = '1';
       });
-      bloquearBotones(2500); // Bloqueo mínimo preventivo
+      bloquearBotones(800); // Bloqueo mínimo preventivo (reducido de 2500)
     }
     
     function responder(r) {
       if (bloqueado) return;
+      bloqueado = true; // Bloqueo inmediato para evitar doble clic
       if (r === 's') {
         respuestas.push(actual + 1);
       }
@@ -404,17 +474,16 @@
     }
     
     function reiniciarTest() {
+      // Regresamos al estado inicial real
       respuestas = [];
       actual = 0;
       document.getElementById('resultado').innerHTML = '';
       document.getElementById('resultado').className = '';
       document.getElementById('character').style.display = 'none';
       document.getElementById('reiniciar').style.display = 'none';
-      document.getElementById('test').style.display = 'block';
-      document.querySelector('.btn-si').disabled = false;
-      document.querySelector('.btn-no').disabled = false;
+      document.getElementById('test').style.display = 'none'; // Aseguramos que el test esté oculto
+      document.getElementById('inicio').style.display = 'block'; // Mostramos pantalla de inicio
       bloqueado = false;
-      mostrarPregunta();
     }
   </script>
 </body>
