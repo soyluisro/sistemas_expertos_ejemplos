@@ -145,6 +145,10 @@
       transition: width 0.5s ease;
     }
 
+    #resultado-container {
+      display: none;
+    }
+    
     #resultado { 
       font-size: 2.2em; 
       margin-top: 30px; 
@@ -223,7 +227,7 @@
   
   <div class="container fade-in">
     <div id="inicio">
-      <p style="font-size: 1.2em; margin-bottom: 25px;">Bienvenido, joven mago. Descubre a qué casa de Hogwarts perteneces realmente...</p>
+      <p style="display: block; font-size: 1.2em; margin-bottom: 25px; color: #3e2723;">Bienvenido, joven mago. Descubre a qué casa de Hogwarts perteneces realmente...</p>
       <button class="btn-iniciar" onclick="iniciar()">Entrar al Gran Comedor</button>
     </div>
 
@@ -232,7 +236,7 @@
         <div id="pb" class="progress-bar"></div>
       </div>
       <div id="pregunta"></div>
-      <div class="botones">
+      <div id="botones-contenedor" class="botones" style="display:none;">
         <button class="btn-si" onclick="responder('s')">Es mi sendero</button>
         <button class="btn-no" onclick="responder('n')">Para nada</button>
       </div>
@@ -371,7 +375,8 @@
     }
     
     function iniciar() {
-      document.getElementById('inicio').style.display = 'none';
+      // Ya no ocultamos el div 'inicio', solo cambiamos los botones
+      document.getElementById('inicio').querySelector('button').style.display = 'none';
       document.getElementById('test').style.display = 'block';
       hablar("Bienvenido, joven mago. Descubre a qué casa de Hogwarts perteneces.", function() {
         setTimeout(mostrarPregunta, 300);
@@ -381,6 +386,7 @@
     
     function mostrarPregunta() {
       var p = document.getElementById('pregunta');
+      var b = document.getElementById('botones-contenedor');
       p.innerText = preguntas[actual];
       p.className = 'fade-in';
       setTimeout(() => { p.className = ''; }, 600);
@@ -388,8 +394,17 @@
       var porc = (actual / preguntas.length) * 100;
       document.getElementById('pb').style.width = porc + "%";
       
+      // Ocultamos los botones mientras habla
+      if (b) b.style.display = 'none';
+      
       var texto = "¿Dime, eres una persona " + preguntasTexto[actual] + "?";
       hablar(texto, function() {
+        // Mostramos los botones solo cuando termina de hablar
+        if (b) {
+          b.style.display = 'flex';
+          b.className = 'botones fade-in';
+        }
+        
         // Desbloqueo manual cuando termina el audio
         bloqueado = false;
         document.querySelector('.btn-si').disabled = false;
@@ -403,6 +418,11 @@
     function responder(r) {
       if (bloqueado) return;
       bloqueado = true; // Bloqueo inmediato para evitar doble clic
+      
+      // Ocultamos los botones inmediatamente para evitar interacciones extra
+      var b = document.getElementById('botones-contenedor');
+      if (b) b.style.display = 'none';
+
       if (r === 's') {
         respuestas.push(actual + 1);
       }
@@ -454,6 +474,7 @@
           }
         }
         if (ok) {
+          document.getElementById('resultado-container').style.display = 'block';
           var div = document.getElementById('resultado');
           div.innerHTML = "Tu casa es: " + r.casa;
           div.className = r.clase + " fade-in";
@@ -466,6 +487,7 @@
         }
       }
       
+      document.getElementById('resultado-container').style.display = 'block';
       var div = document.getElementById('resultado');
       div.innerHTML = "Eres un Muggle";
       div.className = "muggle fade-in";
@@ -474,16 +496,8 @@
     }
     
     function reiniciarTest() {
-      // Regresamos al estado inicial real
-      respuestas = [];
-      actual = 0;
-      document.getElementById('resultado').innerHTML = '';
-      document.getElementById('resultado').className = '';
-      document.getElementById('character').style.display = 'none';
-      document.getElementById('reiniciar').style.display = 'none';
-      document.getElementById('test').style.display = 'none'; // Aseguramos que el test esté oculto
-      document.getElementById('inicio').style.display = 'block'; // Mostramos pantalla de inicio
-      bloqueado = false;
+      // Recargamos la página por completo para limpiar estados, timers y detener voces
+      location.reload();
     }
   </script>
 </body>
